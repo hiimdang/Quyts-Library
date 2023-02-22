@@ -18,9 +18,14 @@ struct Stack {
 
 	void init();
 	void push(T);
+	bool isEmpty();
 	NODES<T>* pop();
 	NODES<T>* top();
 };
+template <class T>
+bool Stack<T>::isEmpty() { // true -> empty
+	return (pTop == NULL);
+}
 template <class T>
 void Stack<T>::init() {
 	pTop = NULL;
