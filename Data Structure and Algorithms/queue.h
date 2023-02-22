@@ -17,12 +17,16 @@ struct Queue {
 	NODEQ<T>* pHead;
 	NODEQ<T>* pTail;
 
+	bool isEmpty();
 	void init();
 	void push(T);
 	NODEQ<T>* pop();
 	NODEQ<T>* top();
 };
-
+template <class T>
+bool Queue<T>::isEmpty() { // true -> empty
+	return (pHead==NULL);
+}
 template <class T>
 void Queue<T>::init(){
 	pHead = NULL;
