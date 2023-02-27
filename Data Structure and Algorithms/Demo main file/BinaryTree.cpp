@@ -21,6 +21,7 @@ void menu() {
 	cout << "5. Min Node\n";
 	cout << "6. Count greater than X\n";
 	cout << "7. Count Node\n";
+	cout << "8. Remove X from Tree\n";
 
 	cout << "\n0. Quit\n";
 }
@@ -111,7 +112,7 @@ int main() {
 				break;
 			}
 			case 6: {
-				int x; int count = 0;
+				type x; int count = 0;
 				cout << "Input X: ";
 				cin >> x;
 				cout << "Number of Node have Data greater than '" << x << "': " << t.countGreaterThanX(t.pRoot, x);
@@ -136,6 +137,19 @@ int main() {
 						cout << "Number of Node(s) with 2 child: " << t.count(t.pRoot, twoChild);
 						break;
 					}
+				}
+				break;
+			}
+			case 8: {
+				type x;
+				cout << "Input data that u want to remove from Tree: ";
+				cin >> x;
+				int flag = removeX(t.pRoot, x);
+				if (flag == -1) {
+					cout << "Theres not Node with data '" << x << "' in the Tree!";
+				}
+				else {
+					cout << "Congrats, u just removed the Node with data '" << x << "' from the Tree~";
 				}
 				break;
 			}
