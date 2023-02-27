@@ -24,7 +24,6 @@ struct BSTree {
 	void init();
 	bool isEmpty();
 	void add(NODET<T>*&,NODET<T>*);
-	void remove(); 
 	void traverse(void (*type)(NODET<T>*)); 
 	NODET<T>* search(T);
 	NODET<T>* max();
@@ -144,6 +143,7 @@ void RLN(NODET<T>* root) {
 	if (root == NULL) return;
 	RLN(root->pRight);
 	RLN(root->pLeft);
+	if (root == NULL) return;
 	show(root);
 }
 // end all func traverse
@@ -190,10 +190,43 @@ int oneChild(NODET<T>* root) {
 template<class T>
 int leaf(NODET<T>* root) {
 	if (root == NULL) return 0;
-	int count = leaf(root->pLeft) + leaf(root->pRight);
-	return (root->pLeft == NULL && root->pRight == NULL) ? count + 1 : count;
+	if (root->pLeft == NULL && root->pRight == NULL) return 1;
+	return leaf(root->pLeft) + leaf(root->pRight); 
 }
 template <class T>
 int BSTree<T>::count(NODET<T>* root, int (*typeCount)(NODET<T>*)) { //only for Leaf(Zero),One,Two Child
 	return typeCount(pRoot);
+}
+template <class T>
+int removeX(NODET<T>*& root, T X) {
+	if (root == NULL) return -1;
+	if (X < root->data) {
+		return DeleteNode(root->pLeft, X);
+	}
+	if (root->data < X) {
+		return DeleteNode(root->pRight, X);
+	}
+	NODET<T>* p = root; //p point to the Node that u want to delete
+	if (root->pLeft == NULL) {
+		root = root->pRight;
+	}
+	else if (root->pRight == NULL) {
+		root = root->pLeft;
+	}
+	else { 
+		findReplaceNode(p, root->pRight); //find the smallest Node that greater than Node p
+	}
+	delete p;
+	return 1;
+}
+template <class T>
+void findReplaceNode(NODET<T>*& p, NODET<T>*& q) {
+	if (q->pLeft!=NULL) {
+		findReplaceNode(p, q->pLeft);
+	}
+	else { //q is the Node that u want to replace with p
+		p->data = q->data; //set data of Node that p point to same as the data of Node that node q point to
+		p = q; //set p point to Node that Node q point to
+		q = q->pRight; //if theres some Node in the right of the Node that q point to, set that Node as the Node that in old place of q
+	}				   //if theres no node in the right of the Node that q point to, that node become a NULL;
 }
