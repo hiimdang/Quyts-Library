@@ -201,10 +201,10 @@ template <class T>
 int removeX(NODET<T>*& root, T X) {
 	if (root == NULL) return -1;
 	if (X < root->data) {
-		return DeleteNode(root->pLeft, X);
+		return removeX(root->pLeft, X);
 	}
 	if (root->data < X) {
-		return DeleteNode(root->pRight, X);
+		return removeX(root->pRight, X);
 	}
 	NODET<T>* p = root; //p point to the Node that u want to delete
 	if (root->pLeft == NULL) {
@@ -229,4 +229,11 @@ void findReplaceNode(NODET<T>*& p, NODET<T>*& q) {
 		p = q; //set p point to Node that Node q point to
 		q = q->pRight; //if theres some Node in the right of the Node that q point to, set that Node as the Node that in old place of q
 	}				   //if theres no node in the right of the Node that q point to, that node become a NULL;
+}
+template <class T>
+int heightBSTree(NODET<T>* root) {
+	if (root == NULL) return 0;
+	int left = heightBSTree(root->pLeft);
+	int right = heightBSTree(root->pRight);
+	return 1 + (left > right ? left : right);
 }
