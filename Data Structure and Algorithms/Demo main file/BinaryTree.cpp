@@ -4,7 +4,7 @@
 using namespace std;
 
 //--type u want in here
-typedef int type;
+typedef string type;
 //--
 void printMinus() {
 	cout << "\n";
@@ -22,6 +22,7 @@ void menu() {
 	cout << "6. Count greater than X\n";
 	cout << "7. Count Node\n";
 	cout << "8. Remove X from Tree\n";
+	cout << "9. Check height of a Node as a root\n";
 
 	cout << "\n0. Quit\n";
 }
@@ -152,6 +153,12 @@ int main() {
 					cout << "Congrats, u just removed the Node with data '" << x << "' from the Tree~";
 				}
 				break;
+			}
+			case 9: {
+				type x;
+				cout << "Input data that u want to check height: ";
+				cin >> x;
+				cout << "Height of that Node is: "<< heightBSTree<type>(t.search(x));
 			}
 		}
 	} while (option != 0);
