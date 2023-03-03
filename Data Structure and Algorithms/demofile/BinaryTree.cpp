@@ -4,7 +4,7 @@
 using namespace std;
 
 //--type u want in here
-typedef string type;
+typedef int type;
 //--
 void printMinus() {
 	cout << "\n";
@@ -54,9 +54,16 @@ int main() {
 		cin >> option;
 		switch (option) {
 			case 1: {
+				bool flag;
 				cout << "Type input for Binary Tree: ";
 				cin >> x;
-				t.add(t.pRoot,createNodeT(x));
+				flag = t.add(t.pRoot,createNodeT(x));
+				if (flag == false) {
+					cout << "Add failed.";
+				}
+				else {
+					cout << "Congrats, you just added a node with data '" << x << "' to the Binary Tree~";
+				}
 				break;
 			}
 			case 2: {
@@ -158,7 +165,15 @@ int main() {
 				type x;
 				cout << "Input data that u want to check height: ";
 				cin >> x;
-				cout << "Height of that Node is: "<< heightBSTree<type>(t.search(x));
+				cout << "Height of that Node is: "<< t.heightBSTree(t.search(x));
+				break;
+			}
+			case 10: {
+				type x;
+				cout << "Input data that u want to get BalFactor: ";
+				cin >> x;
+				cout << "BalFactor: " << t.getBalFactor(t.search(x));
+				break;
 			}
 		}
 	} while (option != 0);
