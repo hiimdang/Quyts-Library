@@ -23,13 +23,15 @@ struct BSTree {
 	//---
 	void init();
 	bool isEmpty();
-	void add(NODET<T>*&,NODET<T>*);
+	bool add(NODET<T>*&,NODET<T>*);
 	void traverse(void (*type)(NODET<T>*)); 
 	NODET<T>* search(T);
 	NODET<T>* max();
 	NODET<T>* min();
 	int countGreaterThanX(NODET<T>*, T);
 	int count(NODET<T>*,int (*typeCount)(NODET<T>*));
+	int heightBSTree(NODET<T>*);
+	int getBalFactor(NODET<T>*);
 };
 //#endif
 template <class T>
@@ -42,23 +44,20 @@ bool BSTree<T>::isEmpty() { //true -> empty
 }
 
 template <class T>
-void BSTree<T>::add(NODET<T>*& root,NODET<T>* p) {
+bool BSTree<T>::add(NODET<T>*& root,NODET<T>* p) {
 	if (p == NULL) {
-		cout << "Add failed, ur input is NULL";
-		return;
+		return false;
 	}
+	bool flag = false;
 	if (root == NULL) {
 		root = p;
-		cout << "Congrats, you just added a node with data '" << p->data << "' to the Binary Tree~";
+		return true;
 	}
 	else {
-		if (p->data == root->data) {
-			cout << "Add failed, Binary Tree already had a Node with data '" << p->data << "'";
-			return;
+			if (p->data > root->data) flag = add(root->pRight, p);
+			if (p->data < root->data) flag = add(root->pLeft, p);
 		}
-		if (p->data > root->data) add(root->pRight, p);
-		if (p->data < root->data) add(root->pLeft, p);
-		}
+	return flag;
 }
 //template<class T>
 //NODET<T>* BSTree<T>::search(T x){
@@ -81,7 +80,7 @@ void BSTree<T>::add(NODET<T>*& root,NODET<T>* p) {
 template<class T>
 NODET<T>* BSTree<T>::search(T x){
 	NODET<T>* root = pRoot;
-	if (root == NULL) goto markSearch; //skip while and goto line 98
+	if (root == NULL) goto markSearch; //skip while and goto line 99
 	while(root != NULL){
 		if (root->data == x) return root;
 		if (root->data != x) {
@@ -198,6 +197,19 @@ int BSTree<T>::count(NODET<T>* root, int (*typeCount)(NODET<T>*)) { //only for L
 	return typeCount(pRoot);
 }
 template <class T>
+void findReplaceNode(NODET<T>*& p, NODET<T>*& q) {
+	if (q->pLeft != NULL) {
+		findReplaceNode(p, q->pLeft);
+	}
+	else { //q is the Node that u want to replace data with p
+		p->data = q->data; //set data of Node that p point to same as the data of Node that node q point to
+		p = q; //set p point to Node that Node q point to
+		q = q->pRight; //set the pLeft of the old q is q->pRight
+					   //example: before 5(old q): left to 3, right to NULL; 3(p): right to 4(q), left to NULL
+					   //after: 5(old q): left to 4, right to NULL; 3(p) -> delete it then
+	}				   //btw, if pRight of the q in q=q->pRight line is NULL -> q=NULL => old q->pLeft = NULL aka delete a leaf
+}
+template <class T>
 int removeX(NODET<T>*& root, T X) {
 	if (root == NULL) return -1;
 	if (X < root->data) {
@@ -220,20 +232,13 @@ int removeX(NODET<T>*& root, T X) {
 	return 1;
 }
 template <class T>
-void findReplaceNode(NODET<T>*& p, NODET<T>*& q) {
-	if (q->pLeft!=NULL) {
-		findReplaceNode(p, q->pLeft);
-	}
-	else { //q is the Node that u want to replace with p
-		p->data = q->data; //set data of Node that p point to same as the data of Node that node q point to
-		p = q; //set p point to Node that Node q point to
-		q = q->pRight; //if theres some Node in the right of the Node that q point to, set that Node as the Node that in old place of q
-	}				   //if theres no node in the right of the Node that q point to, that node become a NULL;
-}
-template <class T>
-int heightBSTree(NODET<T>* root) {
+int BSTree<T>::heightBSTree(NODET<T>* root) {
 	if (root == NULL) return 0;
 	int left = heightBSTree(root->pLeft);
 	int right = heightBSTree(root->pRight);
 	return 1 + (left > right ? left : right);
+}
+template <class T>
+int BSTree<T>::getBalFactor(NODET<T>* root) {
+	return (heightBSTree(root->pRight) - heightBSTree(root->pLeft));
 }
