@@ -3,7 +3,7 @@ using namespace std;
 
 template <class T>
 struct NODES {
-	T data;
+	T data; 
 	NODES<T>* pNext;
 };
 template <class T>
@@ -20,8 +20,10 @@ struct Stack {
 	void init();
 	void push(T);
 	bool isEmpty();
-	NODES<T>* pop();
-	NODES<T>* top();
+	//NODES<T>* pop();
+	//NODES<T>* top();
+	T pop();
+	T top();
 };
 template <class T>
 bool Stack<T>::isEmpty() { // true -> empty
@@ -43,14 +45,28 @@ void Stack<T>::push(T x) {
 		pTop = p;
 	}
 }
+//template <class T>
+//NODES<T>* Stack<T>::top() {
+//	return pTop;
+//}
+//template <class T>
+//NODES<T>* Stack<T>::pop() {
+//	NODES<T>* p = pTop;
+//	pTop = p->pNext;
+//	p->pNext = NULL;
+//	return p;
+//}
+//NOTE: lul, if i return a pointer to a Node, so that the not is not delete at all -> so i'll make a func that return data instead
 template <class T>
-NODES<T>* Stack<T>::top() {
-	return pTop;
-}
-template <class T>
-NODES<T>* Stack<T>::pop() {
+T Stack<T>::pop() {
 	NODES<T>* p = pTop;
 	pTop = p->pNext;
 	p->pNext = NULL;
-	return p;
+	T x = p->data;
+	delete p;
+	return x;
+}
+template <class T>
+T Stack<T>::top() {
+	return pTop->data;
 }
