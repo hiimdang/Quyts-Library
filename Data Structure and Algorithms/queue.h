@@ -21,8 +21,10 @@ struct Queue {
 	bool isEmpty();
 	void init();
 	void push(T);
-	NODEQ<T>* pop();
-	NODEQ<T>* top();
+	//NODEQ<T>* pop();
+	//NODEQ<T>* top();
+	T top();
+	T pop();
 };
 template <class T>
 bool Queue<T>::isEmpty() { // true -> empty
@@ -45,14 +47,28 @@ void Queue<T>::push(T x) {
 		pTail = p;
 	}
 }
+//template <class T>
+//NODEQ<T>* Queue<T>::top() {
+//	return pHead;
+//}
+//template <class T>
+//NODEQ<T>* Queue<T>::pop() {
+//	NODEQ<T>* p = pHead;
+//	pHead = p->pNext;
+//	p->pNext = NULL;
+//	return p;
+//}
+//NOTE: lul, if i return a pointer to a Node, so that the not is not delete at all -> so i'll make a func that return data instead
 template <class T>
-NODEQ<T>* Queue<T>::top() {
-	return pHead;
-}
-template <class T>
-NODEQ<T>* Queue<T>::pop() {
+T Queue<T>::pop() {
 	NODEQ<T>* p = pHead;
 	pHead = p->pNext;
 	p->pNext = NULL;
-	return p;
+	T x = p->data;
+	delete p;
+	return x;
+}
+template <class T>
+T Queue<T>::top() {
+	return pHead->data;
 }
