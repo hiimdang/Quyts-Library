@@ -174,6 +174,7 @@ bool removeX(AVLNode<T> *& root, T x) {
 		}
 		delete p;
 		flag = true;
+		if (root == NULL) return true; //if root is null (when i del a node left -> check it)
 	}
 		root->balFactor = getBalFactor(root); //update balFactor
 		if (root->balFactor >= 2 || root->balFactor <= -2) { //if |balFactor| >= 2 -> balance
